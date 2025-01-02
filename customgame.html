@@ -1,0 +1,266 @@
+<html>
+<head>
+<title> Custom Game </title>
+<script src="https://simplycodingcourses.com/files/simply.js"></script>
+<script>
+function start(){
+sjs.open("target",1000,580);
+
+//background music
+var playM = new Audio('Sounds/backgroundmusic.mp3');
+var toggle = true;
+var musicOn = false;
+sjs.keyDown(SPACE_KEY, function(){
+  if(toggle == true){
+    if(musicOn == false){
+      playM.play();
+      musicOn = true;
+    } else {
+      playM.pause();
+      musicOn = false;
+    }
+    toggle = false;
+    setTimeout(function(){
+      toggle = true;
+    }, 1000);
+  }//end if toggle statement
+}); //end keyDown function
+
+//sound effects
+var shieldsound = new Audio('Sounds/shield.mp3');
+
+var fireballsound = new Audio('Sounds/fireball.mp3');
+
+var spevensound = new Audio('Sounds/speven.mp3');
+
+var background = new
+sjs.Image("Images/background.png");
+background.setSize (1000, 580);
+
+var music_text = new sjs.Text("press space bar to toggle music", 28, "#ff0");
+music_text.centerH().bottom();
+setTimeout(function(){
+  music_text.destroy();
+}, 2000);
+
+//player properties
+var player = new sjs.Image("Images/r_idle.png");
+player.type = "player";
+player.setSize(65,104);
+player.setGravity(0);
+player.bottom();
+player.friction = .3;
+player.noBounds = true;
+
+//enemy properties
+var enemy = new sjs.Image("Images/New Piskel (4).gif")
+enemy.type = "enemy";
+enemy.setSize(182, 208);
+enemy.setGravity(0);
+enemy.right();
+enemy.friction = .3;
+enemy.noBounds = true;
+
+//potion properties
+var potion1 = new sjs.Image("Images/potion1.png")
+potion1.type = "potion1";
+potion1.setSize(24,37);
+potion1.setGravity(0);
+potion1.x = 342;
+potion1.y = 178;
+potion1.friction = .3;
+potion1.noBounds = true;
+
+var potion2 = new sjs.Image("Images/potion2.png")
+potion2.type = "potion2";
+potion2.setSize(24,37);
+potion2.setGravity(0);
+potion2.x = 654;
+potion2.y = 512;
+potion2.friction = .3;
+potion2.noBounds = true;
+
+var potion3 = new sjs.Image("Images/potion3.png")
+potion3.type = "potion3";
+potion3.setSize(24,37);
+potion3.setGravity(0);
+potion3.x = 921;
+potion3.y = 380;
+potion3.friction = .3;
+potion3.noBounds = true;
+
+var potion4 = new sjs.Image("Images/potion4.png")
+potion4.type = "potion4";
+potion4.setSize(24,37);
+potion4.setGravity(0);
+potion4.x = 567;
+potion4.y = 380;
+potion4.friction = .3;
+potion4.noBounds = true;
+
+var potion5 = new sjs.Image("Images/potion5.png")
+potion5.type = "potion5";
+potion5.setSize(24,37);
+potion5.setGravity(0);
+potion5.x = 45;
+potion5.y = 250;
+potion5.friction = .3;
+potion5.noBounds = true;
+//end potion properties
+
+//fireball properties
+setInterval(function(){
+  var speed = Math.round(1 + Math.random()*10);
+    var fireball = new sjs.Image("Images/fireball.png");
+    fireball.type = "fireball";
+    fireball.setSize(100,50);
+    fireball.noBounds = true;
+    fireball.friction = 0;
+    fireball.pushLeft(speed);
+    fireball.scaleSize(.5 + Math.random() * 1.2);
+ fireball.moveTo(sjs.getWidth(), Math.random() * (fireball.getClamp().y));
+ fireballsound.play();
+}, 900);
+
+sjs.left_screen.offset(-500);
+sjs.right_screen.offset(500);
+
+sjs.onHit("fireball", "left_screen", function(x,y){
+  x.destroy();
+});
+
+sjs.onHit("player",["left_screen","right_screen", "top_screen", "bottom_screen"], function(x,y){
+  sjs.stoppedBy(x,y);
+});
+
+
+var r_images = ["Images/r_walk1.png", "Images/r_walk1 (1).png", "Images/r_walk1 (2).png", "Images/r_walk2.png", "Images/r_walk2 (1).png", "Images/r_walk2 (2).png", "Images/r_walk3.png", "Images/r_walk3 (1)", "Images/r_walk3 (2)", "Images/r_walk4.png", "Images/r_walk4 (1).png", "Images/r_walk4 (2).png"];
+
+var l_images = ["Images/l_walk1.png", "Images/l_walk1(1).png", "Images/l_walk1(2).png", "Images/l_walk2.png", "Images/l_walk2 (1).png", "Images/l_walk2 (2).png", "Images/l_walk3.png", "Images/l_walk3 (1).png", "Images/l_walk3 (2).png", "Images/l_walk4.png", "Images/l_walk4 (1).png", "Images/l_walk4 (2).png"];
+
+var f_images = ["Images/f_walk1.png", "Images/f_walk1(1).png", "Images/f_walk1(2).png", "Images/f_walk2.png", "Images/f_walk2 (1).png", "Images/f_walk2 (2).png", "Images/f_walk3.png", "Images/f_walk3 (1).png", "Images/f_walk3 (2).png", "Images/f_walk4.png", "Images/f_walk4 (1).png", "Images/f_walk4 (2).png"];
+
+var b_images = ["Images/b_walk1.png", "Images/b_walk1(1).png", "Images/b_walk1(2).png", "Images/b_walk2.png", "Images/b_walk2 (1).png", "Images/b_walk2 (2).png", "Images/b_walk3.png", "Images/b_walk3 (1).png", "Images/b_walk3 (2).png", "Images/b_walk4.png", "Images/b_walk4 (1).png", "Images/b_walk4 (2).png"];
+
+var attack_images = ["Images/attack1.png", "Images/attack1 (1).png", "Images/attack1 (2).png", "Images/attack2.png", "Images/attack2 (1).png", "Images/attack2 (2).png", "Images/attack3.png", "Images/attack3 (1).png", "Images/attack3 (2).png"];
+
+var r_facing = true;
+var blocking = false;
+var attacking = false;
+var r_track = 0;
+var l_track = 0;
+var f_track = 0;
+var b_track = 0;
+var attack_track = 0;
+
+sjs.keyDown(RIGHT_KEY, function(){
+  player.setSize(65,104);
+  r_facing = true;
+  attacking = false;
+  blocking = false;
+  r_track = r_track + 1;
+  player.pushRight(2);
+  player.setImage(r_images[r_track]);
+  if(r_track == 11){
+    r_track = 0;
+  }
+}); //end right key
+
+sjs.keyDown(LEFT_KEY, function(){
+  player.setSize(72,104);
+  r_facing = false;
+  attacking = false;
+  blocking = false;
+  l_track = l_track + 1;
+  player.pushLeft(2);
+  player.setImage(l_images[l_track]);
+  if(l_track == 11){
+    l_track = 0;
+  }
+}); //end left key
+
+sjs.keyDown(UP_KEY, function(){
+  player.setSize(91,104);
+  r_facing = false;
+  attacking = false;
+  blocking = false;
+  b_track = b_track + 1;
+  player.pushUp(2);
+  player.setImage(b_images[b_track]);
+  if(b_track == 11){
+    b_track = 0;
+  }
+}); //end up key
+ 
+sjs.keyDown(DOWN_KEY, function(){
+  player.setSize(91,104);
+  r_facing = false;
+  attacking = false;
+  blocking = false;
+  f_track = f_track + 1;
+  player.pushDown(2);
+  player.setImage(f_images[f_track]);
+  if(f_track == 11){
+    f_track = 0;
+  }
+}); //end down key
+
+sjs.keyDown(A_KEY, function(){
+  player.setSize(91,104);
+    attacking = true;
+  blocking = false;
+  attack_track = (attack_track + 1) % attack_images.length;
+  player.setImage(attack_images[attack_track]);
+  spevensound.play();
+}); //end a key
+
+window.addEventListener("keyup", function(e){
+  if(e.keyCode == S_KEY){
+    blocking = true;
+    attacking = false;
+    player.setImage("Images/r_shield.png");
+    shieldsound.play();
+  }//end if statement
+});//end EventListener function
+
+//potions
+var potionscore = 0;
+var potionscore_txt = new sjs.Text ("Potions : 0", 28, "#ff0");
+
+sjs.onHit("player", ["potion1", "potion2", "potion3", "potion4", "potion5"], function(x,y){
+  y.destroy();
+  potionscore = potionscore + 1;
+  potionscore_txt.setText("Potions: "+potionscore);
+});
+
+sjs.onHit("player", "enemy", function(x,y){
+  if(attacking == true && potionscore >= 5){
+    y.destroy();
+    window.location = "win.html";
+  }else if(attacking == true && potionscore < 5){
+    x.destroy();
+    window.location = "gameover.html";
+  }else{
+    x.destroy();
+    window.location = "gameover.html";
+  }
+});
+
+sjs.onHit("player", "fireball", function(x,y){
+if(blocking == true){
+ y.destroy();
+}else{
+ x.destroy();
+ window.location = "gameover.html";
+}
+});
+
+} //end start
+</script>
+</head>
+<body onload="start()">
+<h1> Custom Game </h1>
+
+<div id="target" style="margin:auto;background:grey;"></div>
+</body>
+</html>
